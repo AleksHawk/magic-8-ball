@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MagicBlock | Mystic 8 Ball</title>
+    <title>MagicBlock | Mystic Oracle</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -26,7 +26,6 @@
             <div class="ball-wrapper">
                 <div class="magic-ball-outer">
                     <div class="magic-ball" id="magic-ball">
-                        <img src="MagicBlock-Logomark-White.png" alt="MB" class="ball-logo-bottom">
                         
                         <div class="window-bezel">
                             <div class="window">
@@ -38,6 +37,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -53,6 +53,23 @@
         </div>
        
         <button id="download-btn" class="neon-button hidden">SAVE PROPHECY</button>
+    </div>
+
+    <div id="screenshot-export" class="screenshot-export">
+        <img src="logo-main.png" alt="MagicBlock Logo" class="screenshot-main-logo">
+        
+        <div class="screenshot-title">THE MAGICBLOCK ORACLE HAS SPOKEN:</div>
+        <div class="screenshot-big-answer" id="screenshot-big-answer">WITHOUT A DOUBT</div>
+        <div class="screenshot-subtitle">SEEK YOUR OWN DESTINY!</div>
+        
+        <div class="screenshot-ball-container">
+            <div class="screenshot-ball-bezel">
+                <div class="screenshot-triangle">
+                    <span class="screenshot-answer-text" id="screenshot-small-answer">WITHOUT A DOUBT</span>
+                </div>
+            </div>
+            <img src="MagicBlock-Logomark-White.png" alt="MB" class="screenshot-hat">
+        </div>
     </div>
 
     <script src="script.js"></script>
