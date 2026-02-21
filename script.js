@@ -12,13 +12,22 @@ const downloadBtn = document.getElementById('download-btn');
 const instructionsBox = document.getElementById('instructions-box');
 const captureArea = document.getElementById('capture-area');
 
+const soundShake = document.getElementById('sound-shake');
+const soundReveal = document.getElementById('sound-reveal');
+soundShake.volume = 0.5;
+soundReveal.volume = 0.7;
+
 ball.addEventListener('click', () => {
+    // Безпечний запуск звуку (не зламає сайт, якщо браузер заблокує аудіо)
+    try {
+        soundShake.currentTime = 0;
+        soundShake.play().catch(e => console.log("Audio blocked by browser"));
+    } catch(e) {}
+
     triangle.classList.add('hidden');
     eight.classList.remove('hidden');
     downloadBtn.classList.add('hidden');
     
-    if (instructionsBox) instructionsBox.classList.add('hidden');
-
     ball.classList.add('shake');
 
     setTimeout(() => {
@@ -27,6 +36,11 @@ ball.addEventListener('click', () => {
         const randomIndex = Math.floor(Math.random() * answers.length);
         answerText.innerText = answers[randomIndex];
 
+        try {
+            soundReveal.currentTime = 0;
+            soundReveal.play().catch(e => console.log("Audio blocked"));
+        } catch(e) {}
+
         eight.classList.add('hidden');
         triangle.classList.remove('hidden');
         
@@ -34,25 +48,36 @@ ball.addEventListener('click', () => {
     }, 600);
 });
 
+// Створення красивого скріншоту для Twitter
 downloadBtn.addEventListener('click', () => {
     const originalText = downloadBtn.innerText;
-    downloadBtn.innerText = "DIVINING..."; 
+    downloadBtn.innerText = "CREATING POST..."; 
     
-    html2canvas(captureArea, {
-        backgroundColor: "#09001d", 
-        scale: 3, 
-        useCORS: true, 
-        logging: false,
-        x: window.scrollX,
-        y: window.scrollY,
-        width: captureArea.offsetWidth,
-        height: captureArea.offsetHeight
-    }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'MagicBlock-Prophecy.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-        
-        downloadBtn.innerText = originalText;
-    });
+    // Тимчасово ховаємо інструкцію, щоб вона не псувала картинку
+    instructionsBox.style.opacity = '0';
+    downloadBtn.style.opacity = '0';
+
+    setTimeout(() => {
+        html2canvas(captureArea, {
+            backgroundColor: "#050011", 
+            scale: 3, // Висока якість картинки
+            useCORS: true, // Дозволяє малювати картинки з інших доменів (важливо для лого)
+            allowTaint: true,
+            logging: false,
+            // Трохи розширюємо зону, щоб неонове світіння не обрізалось
+            onclone: function (clonedDoc) {
+                clonedDoc.getElementById('capture-area').style.padding = '40px';
+            }
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'MagicBlock-Twitter-Post.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            
+            // Повертаємо все як було
+            instructionsBox.style.opacity = '1';
+            downloadBtn.style.opacity = '1';
+            downloadBtn.innerText = originalText;
+        });
+    }, 300); // Даємо 300 мілісекунд, щоб ефекти CSS встигли відмалюватись
 });
