@@ -2,61 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MagicBlock | Mystic 8 Ball</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
-    <audio id="sound-shake" src="https://assets.mixkit.co/sfx/preview/mixkit-magic-sweep-game-trophy-257.mp3" crossorigin="anonymous" playsinline></audio>
-    <audio id="sound-reveal" src="https://assets.mixkit.co/sfx/preview/mixkit-fairy-arcade-sparkle-866.mp3" crossorigin="anonymous" playsinline></audio>
+    <audio id="sound-shake" src="https://assets.mixkit.co/sfx/preview/mixkit-magic-sweep-game-trophy-257.mp3" preload="auto"></audio>
+    <audio id="sound-reveal" src="https://assets.mixkit.co/sfx/preview/mixkit-fairy-arcade-sparkle-866.mp3" preload="auto"></audio>
 
-    <div id="capture-area" class="poster-frame">
-        <div class="stars-bg"></div>
-        
+    <div id="stars-container">
+        <div id="stars"></div>
+        <div id="nebula"></div>
+    </div>
+    
+    <div class="container">
         <header class="main-header">
             <img src="logo-main.png" alt="MagicBlock Logo" class="neon-logo">
         </header>
 
-        <div id="poster-text" class="poster-text hidden">
-            <p>THE MAGICBLOCK ORACLE HAS SPOKEN:</p>
-            <h3 id="poster-answer-result"></h3>
-            <p>SEEK YOUR OWN DESTINY!</p>
-        </div>
-
-        <div class="ball-wrapper">
-            <div class="magic-aura"></div>
-            
-            <div class="magic-ball-outer">
-                <div class="magic-ball" id="magic-ball">
-                    
-                    <img src="logo-ball.png" alt="MB" class="ball-logo">
-                    
-                    <div class="window-bezel">
-                        <div class="window">
-                            <div class="eight" id="eight">8</div>
-                            <div class="triangle hidden" id="triangle">
-                                <span class="answer-text" id="answer"></span>
+        <div class="main-content-wrapper" id="capture-area">
+            <div class="ball-wrapper">
+                <div class="magic-ball-outer">
+                    <div class="magic-ball" id="magic-ball">
+                        <img src="MagicBlock-Logomark-White.png" alt="MB" class="ball-logo-bottom">
+                        
+                        <div class="window-bezel">
+                            <div class="window">
+                                <div class="eight-logo-container" id="eight">
+                                    <img src="MagicBlock-Logomark-White.png" alt="MB Logo" class="center-logo">
+                                </div>
+                                <div class="triangle hidden" id="triangle">
+                                    <span class="answer-text" id="answer"></span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="instructions neon-box" id="instructions-box">
+                <h2>HOW IT WORKS:</h2>
+                <ol>
+                    <li>Clear your mind and ask a 'Yes/No' question.</li>
+                    <li>Tap the ball to awaken the magic.</li>
+                    <li>Save your prophecy!</li>
+                </ol>
+            </div>
         </div>
-    </div>
-    
-    <div class="ui-container">
-        <div class="instructions neon-box" id="instructions-box">
-            <h2>HOW IT WORKS:</h2>
-            <ol>
-                <li>Clear your mind and ask a 'Yes/No' question.</li>
-                <li>Tap the ball to awaken the magic.</li>
-                <li>Save your prophecy!</li>
-            </ol>
-        </div>
-        
-        <button id="download-btn" class="neon-button hidden">SAVE POSTER</button>
+       
+        <button id="download-btn" class="neon-button hidden">SAVE PROPHECY</button>
     </div>
 
     <script src="script.js"></script>
