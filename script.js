@@ -9,24 +9,18 @@ const eight = document.getElementById('eight');
 const triangle = document.getElementById('triangle');
 const answerText = document.getElementById('answer');
 const downloadBtn = document.getElementById('download-btn');
-const instructionsBox = document.getElementById('instructions-box');
 const captureArea = document.getElementById('capture-area');
-
-// Елементи для скріншоту
-const screenshotTextBlock = document.getElementById('screenshot-text-block');
-const screenshotAnswerResult = document.getElementById('screenshot-answer-result');
+const posterText = document.getElementById('poster-text');
+const posterAnswerResult = document.getElementById('poster-answer-result');
 
 const soundShake = document.getElementById('sound-shake');
 const soundReveal = document.getElementById('sound-reveal');
-soundShake.volume = 0.6;
-soundReveal.volume = 0.8;
 
-// Функція для безпечного відтворення звуку
 function playSound(sound) {
     try {
         sound.currentTime = 0;
-        sound.play().catch(e => console.warn("Audio play failed (likely browser policy):", e));
-    } catch(e) { console.warn("Audio error:", e); }
+        sound.play().catch(() => {});
+    } catch(e) {}
 }
 
 ball.addEventListener('click', () => {
@@ -43,9 +37,9 @@ ball.addEventListener('click', () => {
         
         const randomIndex = Math.floor(Math.random() * answers.length);
         const finalAnswer = answers[randomIndex];
+        
         answerText.innerText = finalAnswer;
-        // Зберігаємо відповідь для скріншоту
-        screenshotAnswerResult.innerText = finalAnswer;
+        posterAnswerResult.innerText = finalAnswer;
 
         playSound(soundReveal);
 
@@ -53,54 +47,44 @@ ball.addEventListener('click', () => {
         triangle.classList.remove('hidden');
         
         downloadBtn.classList.remove('hidden');
-    }, 600);
+    }, 500);
 });
 
-downloadBtn.addEventListener('click', () => {
+downloadBtn.addEventListener('click', async () => {
     const originalText = downloadBtn.innerText;
-    downloadBtn.innerText = "PREPARING POSTER..."; 
-    
-    // 1. Ховаємо інструкцію та кнопку
-    instructionsBox.style.opacity = '0';
-    downloadBtn.style.opacity = '0';
-    
-    // 2. Показуємо секретний текст для скріншоту
-    screenshotTextBlock.classList.add('show-on-screenshot');
+    downloadBtn.innerText = "PREPARING..."; 
+    downloadBtn.style.opacity = '0.5';
 
-    setTimeout(() => {
-        // Визначаємо розмір сторони квадрата на основі поточної ширини контейнера
-        const sideSize = captureArea.offsetWidth;
+    // 1. Готуємо контейнер до зйомки (показуємо текст, робимо відступи)
+    posterText.classList.remove('hidden');
+    captureArea.classList.add('capture-mode');
 
-        html2canvas(captureArea, {
-            backgroundColor: "#050011", 
-            scale: 3, // Висока якість
-            useCORS: true,
-            logging: false,
-            // ПРИМУСОВИЙ КВАДРАТНИЙ РОЗМІР (1:1)
-            width: sideSize,
-            height: sideSize,
-            windowWidth: sideSize,
-            windowHeight: sideSize,
-            // Центруємо контент у квадраті під час захвату
-            onclone: function (clonedDoc) {
-                const clonedArea = clonedDoc.getElementById('capture-area');
-                clonedArea.style.height = sideSize + 'px';
-                clonedArea.style.display = 'flex';
-                clonedArea.style.flexDirection = 'column';
-                clonedArea.style.justifyContent = 'center';
-                clonedArea.style.padding = '20px';
-            }
-        }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = 'MagicBlock-Prediction-Poster.png';
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-            
-            // 3. Повертаємо все назад
-            screenshotTextBlock.classList.remove('show-on-screenshot');
-            instructionsBox.style.opacity = '1';
-            downloadBtn.style.opacity = '1';
-            downloadBtn.innerText = originalText;
-        });
-    }, 500); // Більша затримка, щоб стилі встигли застосуватись
+    // Даємо браузеру 200 мілісекунд, щоб він застосував стилі перед скріншотом
+    await new Promise(resolve => setTimeout(resolve, 200));
+
+    // 2. Робимо скріншот. Scale: 2 (краще для пам'яті телефону, ніж 3)
+    html2canvas(captureArea, {
+        backgroundColor: "#050011", 
+        scale: 2, 
+        useCORS: true,
+        logging: false
+    }).then(canvas => {
+        // 3. Завантажуємо
+        const link = document.createElement('a');
+        link.download = 'MagicBlock-Oracle.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        
+        // 4. Повертаємо сайт у початковий вигляд
+        posterText.classList.add('hidden');
+        captureArea.classList.remove('capture-mode');
+        downloadBtn.innerText = originalText;
+        downloadBtn.style.opacity = '1';
+    }).catch(err => {
+        console.error("Screenshot failed:", err);
+        posterText.classList.add('hidden');
+        captureArea.classList.remove('capture-mode');
+        downloadBtn.innerText = "ERROR. TRY AGAIN";
+        downloadBtn.style.opacity = '1';
+    });
 });
