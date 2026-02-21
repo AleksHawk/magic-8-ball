@@ -1,10 +1,11 @@
 const answers = [
-    "IT IS CERTAIN", "WITHOUT A DOUBT", "STARS SAY YES", "YOU MAY RELY ON IT", "AS I SEE IT, YES",
-    "REPLY HAZY, TRY AGAIN", "ASK AGAIN LATER", "CANNOT PREDICT NOW", "CONCENTRATE AND ASK AGAIN",
-    "DON'T COUNT ON IT", "MY REPLY IS NO", "MY SOURCES SAY NO", "OUTLOOK NOT SO GOOD", "CHANCES ARE SLIM"
+    "it is certain", "without a doubt", "stars say yes", "you may rely on it", "as i see it, yes",
+    "reply hazy, try again", "ask again later", "cannot predict now", "concentrate and ask again",
+    "don't count on it", "my reply is no", "my sources say no", "outlook not so good", "chances are slim"
 ];
 
 const ball = document.getElementById('magic-ball');
+const ballOuter = document.getElementById('magic-ball-outer');
 const eightLogo = document.getElementById('eight');
 const triangle = document.getElementById('triangle');
 const answerText = document.getElementById('answer');
@@ -13,6 +14,7 @@ const instructionsBox = document.getElementById('instructions-box');
 const screenshotExport = document.getElementById('screenshot-export');
 const bigAnswerText = document.getElementById('screenshot-big-answer');
 const smallAnswerText = document.getElementById('screenshot-small-answer');
+const fog = document.getElementById('fog');
 
 const soundShake = document.getElementById('sound-shake');
 const soundReveal = document.getElementById('sound-reveal');
@@ -30,6 +32,9 @@ ball.addEventListener('click', () => {
     if (instructionsBox) instructionsBox.classList.add('hidden');
 
     ball.classList.add('shake');
+    
+    fog.classList.remove('hidden');
+    setTimeout(() => fog.classList.add('active'), 10);
 
     setTimeout(() => {
         ball.classList.remove('shake');
@@ -47,13 +52,38 @@ ball.addEventListener('click', () => {
         eightLogo.classList.add('hidden');
         triangle.classList.remove('hidden');
         
+        fog.classList.remove('active');
+        setTimeout(() => fog.classList.add('hidden'), 400);
+        
         downloadBtn.classList.remove('hidden');
-    }, 600);
+    }, 1200);
+});
+
+ballOuter.addEventListener('mousemove', (e) => {
+    const rect = ballOuter.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    
+    const rotateX = ((y - centerY) / centerY) * -15; 
+    const rotateY = ((x - centerX) / centerX) * 15;
+    
+    ballOuter.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+});
+
+ballOuter.addEventListener('mouseleave', () => {
+    ballOuter.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+    ballOuter.style.transition = 'transform 0.5s ease';
+});
+
+ballOuter.addEventListener('mouseenter', () => {
+    ballOuter.style.transition = 'transform 0.1s ease-out';
 });
 
 downloadBtn.addEventListener('click', () => {
     const originalText = downloadBtn.innerText;
-    downloadBtn.innerText = "DIVINING..."; 
+    downloadBtn.innerText = "divining..."; 
     
     html2canvas(screenshotExport, {
         backgroundColor: "#050011", 
@@ -62,7 +92,7 @@ downloadBtn.addEventListener('click', () => {
         logging: false
     }).then(canvas => {
         const link = document.createElement('a');
-        link.download = 'MagicBlock-Oracle.png';
+        link.download = 'magicblock-oracle.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
         
