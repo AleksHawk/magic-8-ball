@@ -12,17 +12,25 @@ const downloadBtn = document.getElementById('download-btn');
 const instructionsBox = document.getElementById('instructions-box');
 const captureArea = document.getElementById('capture-area');
 
+// Елементи для скріншоту
+const screenshotTextBlock = document.getElementById('screenshot-text-block');
+const screenshotAnswerResult = document.getElementById('screenshot-answer-result');
+
 const soundShake = document.getElementById('sound-shake');
 const soundReveal = document.getElementById('sound-reveal');
-soundShake.volume = 0.5;
-soundReveal.volume = 0.7;
+soundShake.volume = 0.6;
+soundReveal.volume = 0.8;
+
+// Функція для безпечного відтворення звуку
+function playSound(sound) {
+    try {
+        sound.currentTime = 0;
+        sound.play().catch(e => console.warn("Audio play failed (likely browser policy):", e));
+    } catch(e) { console.warn("Audio error:", e); }
+}
 
 ball.addEventListener('click', () => {
-    // Безпечний запуск звуку (не зламає сайт, якщо браузер заблокує аудіо)
-    try {
-        soundShake.currentTime = 0;
-        soundShake.play().catch(e => console.log("Audio blocked by browser"));
-    } catch(e) {}
+    playSound(soundShake);
 
     triangle.classList.add('hidden');
     eight.classList.remove('hidden');
@@ -34,12 +42,12 @@ ball.addEventListener('click', () => {
         ball.classList.remove('shake');
         
         const randomIndex = Math.floor(Math.random() * answers.length);
-        answerText.innerText = answers[randomIndex];
+        const finalAnswer = answers[randomIndex];
+        answerText.innerText = finalAnswer;
+        // Зберігаємо відповідь для скріншоту
+        screenshotAnswerResult.innerText = finalAnswer;
 
-        try {
-            soundReveal.currentTime = 0;
-            soundReveal.play().catch(e => console.log("Audio blocked"));
-        } catch(e) {}
+        playSound(soundReveal);
 
         eight.classList.add('hidden');
         triangle.classList.remove('hidden');
@@ -48,36 +56,51 @@ ball.addEventListener('click', () => {
     }, 600);
 });
 
-// Створення красивого скріншоту для Twitter
 downloadBtn.addEventListener('click', () => {
     const originalText = downloadBtn.innerText;
-    downloadBtn.innerText = "CREATING POST..."; 
+    downloadBtn.innerText = "PREPARING POSTER..."; 
     
-    // Тимчасово ховаємо інструкцію, щоб вона не псувала картинку
+    // 1. Ховаємо інструкцію та кнопку
     instructionsBox.style.opacity = '0';
     downloadBtn.style.opacity = '0';
+    
+    // 2. Показуємо секретний текст для скріншоту
+    screenshotTextBlock.classList.add('show-on-screenshot');
 
     setTimeout(() => {
+        // Визначаємо розмір сторони квадрата на основі поточної ширини контейнера
+        const sideSize = captureArea.offsetWidth;
+
         html2canvas(captureArea, {
             backgroundColor: "#050011", 
-            scale: 3, // Висока якість картинки
-            useCORS: true, // Дозволяє малювати картинки з інших доменів (важливо для лого)
-            allowTaint: true,
+            scale: 3, // Висока якість
+            useCORS: true,
             logging: false,
-            // Трохи розширюємо зону, щоб неонове світіння не обрізалось
+            // ПРИМУСОВИЙ КВАДРАТНИЙ РОЗМІР (1:1)
+            width: sideSize,
+            height: sideSize,
+            windowWidth: sideSize,
+            windowHeight: sideSize,
+            // Центруємо контент у квадраті під час захвату
             onclone: function (clonedDoc) {
-                clonedDoc.getElementById('capture-area').style.padding = '40px';
+                const clonedArea = clonedDoc.getElementById('capture-area');
+                clonedArea.style.height = sideSize + 'px';
+                clonedArea.style.display = 'flex';
+                clonedArea.style.flexDirection = 'column';
+                clonedArea.style.justifyContent = 'center';
+                clonedArea.style.padding = '20px';
             }
         }).then(canvas => {
             const link = document.createElement('a');
-            link.download = 'MagicBlock-Twitter-Post.png';
+            link.download = 'MagicBlock-Prediction-Poster.png';
             link.href = canvas.toDataURL('image/png');
             link.click();
             
-            // Повертаємо все як було
+            // 3. Повертаємо все назад
+            screenshotTextBlock.classList.remove('show-on-screenshot');
             instructionsBox.style.opacity = '1';
             downloadBtn.style.opacity = '1';
             downloadBtn.innerText = originalText;
         });
-    }, 300); // Даємо 300 мілісекунд, щоб ефекти CSS встигли відмалюватись
+    }, 500); // Більша затримка, щоб стилі встигли застосуватись
 });
