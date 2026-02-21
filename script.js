@@ -1,8 +1,11 @@
-// Твої магічні відповіді
+// ENGLISH Answers adapted for MagicBlock style
 const answers = [
-    "Безсумнівно", "Зірки кажуть так", "Усе вказує на це", "Так!",
-    "Майбутнє туманне", "Спитай пізніше", "Сконцентруйся...",
-    "Моя відповідь ні", "Зірки не радять", "Шанси малі", "Ні."
+    // Positive
+    "IT IS CERTAIN", "WITHOUT A DOUBT", "STARS SAY YES", "YOU MAY RELY ON IT", "AS I SEE IT, YES",
+    // Neutral
+    "REPLY HAZY, TRY AGAIN", "ASK AGAIN LATER", "CANNOT PREDICT NOW", "CONCENTRATE AND ASK AGAIN",
+    // Negative
+    "DON'T COUNT ON IT", "MY REPLY IS NO", "MY SOURCES SAY NO", "OUTLOOK NOT SO GOOD", "CHANCES ARE SLIM"
 ];
 
 const ball = document.getElementById('magic-ball');
@@ -10,22 +13,26 @@ const eight = document.getElementById('eight');
 const triangle = document.getElementById('triangle');
 const answerText = document.getElementById('answer');
 const downloadBtn = document.getElementById('download-btn');
+const instructionsBox = document.getElementById('instructions-box');
 const captureArea = document.getElementById('capture-area');
 
 ball.addEventListener('click', () => {
-    // 1. Ховаємо минулу відповідь і кнопку
+    // 1. Скидаємо стан
     triangle.classList.add('hidden');
     eight.classList.remove('hidden');
     downloadBtn.classList.add('hidden');
+    
+    // Ховаємо інструкцію назавжди після першого кліку
+    if (instructionsBox) instructionsBox.classList.add('hidden');
 
-    // 2. Запускаємо анімацію трясіння
+    // 2. Анімація трясіння
     ball.classList.add('shake');
 
-    // 3. Чекаємо завершення анімації (500 мілісекунд)
+    // 3. Чекаємо завершення анімації
     setTimeout(() => {
         ball.classList.remove('shake');
         
-        // Вибираємо випадкову відповідь з масиву
+        // Випадкова відповідь
         const randomIndex = Math.floor(Math.random() * answers.length);
         answerText.innerText = answers[randomIndex];
 
@@ -35,40 +42,29 @@ ball.addEventListener('click', () => {
         
         // Показуємо кнопку збереження
         downloadBtn.classList.remove('hidden');
-    }, 500);
+    }, 600);
 });
 
-// Функція збереження скріншоту
+// Функція скріншоту
 downloadBtn.addEventListener('click', () => {
-    // Змінюємо текст кнопки, щоб користувач розумів, що йде завантаження
     const originalText = downloadBtn.innerText;
-    downloadBtn.innerText = "Магія працює...";
+    downloadBtn.innerText = "DIVINING..."; // Текст під час завантаження
     
     html2canvas(captureArea, {
-        backgroundColor: "#050011", // Зберігаємо темний фон для картинки
-        scale: 2, // Подвійна якість для красивого PNG
-        logging: false
+        backgroundColor: "#09001d", 
+        scale: 3, 
+        useCORS: true, 
+        logging: false,
+        x: window.scrollX,
+        y: window.scrollY,
+        width: captureArea.offsetWidth,
+        height: captureArea.offsetHeight
     }).then(canvas => {
         const link = document.createElement('a');
-        link.download = 'MagicBlock-Prediction.png';
+        link.download = 'MagicBlock-Prophecy.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
         
-        // Повертаємо текст кнопці
         downloadBtn.innerText = originalText;
     });
-});
-
-// Створення магічного сліду (Sparkle Trail)
-document.addEventListener('mousemove', function(e) {
-    if (Math.random() > 0.4) return; // Контролюємо густоту зірочок
-    const sparkle = document.createElement('div');
-    sparkle.className = 'sparkle';
-    sparkle.style.left = e.pageX + 'px';
-    sparkle.style.top = e.pageY + 'px';
-    document.body.appendChild(sparkle);
-
-    setTimeout(() => {
-        sparkle.remove();
-    }, 800);
 });
