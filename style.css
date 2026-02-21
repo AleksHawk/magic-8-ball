@@ -6,11 +6,13 @@ body {
     font-family: 'Cinzel', serif;
     overflow-x: hidden;
     display: flex;
-    flex-direction: column; /* ВИПРАВЛЕННЯ ДЛЯ ТЕЛЕФОНУ: елементи йдуть зверху вниз */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    cursor: crosshair;
+    /* Запобігає виділенню тексту на телефоні */
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
 }
 
 #stars {
@@ -18,20 +20,19 @@ body {
     top: 0; left: 0; width: 100%; height: 100%;
     background-image: 
         radial-gradient(1.5px 1.5px at 20px 30px, #fff, rgba(0,0,0,0)),
-        radial-gradient(1.5px 1.5px at 40px 70px, #8a2be2, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 50px 160px, #00ffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 160px, #8a2be2, rgba(0,0,0,0)),
         radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 130px 80px, #8a2be2, rgba(0,0,0,0));
+        radial-gradient(2.5px 2.5px at 130px 80px, #00ffff, rgba(0,0,0,0));
     background-repeat: repeat;
-    background-size: 200px 200px;
+    background-size: 250px 250px;
     z-index: -1;
-    opacity: 0.8;
-    animation: twinkle 5s infinite linear;
+    opacity: 0.6;
+    animation: twinkle 6s infinite linear;
 }
 
 @keyframes twinkle {
     0% { transform: translateY(0); }
-    100% { transform: translateY(-200px); }
+    100% { transform: translateY(-250px); }
 }
 
 .container {
@@ -43,7 +44,7 @@ body {
     padding: 20px 10px;
     width: 100%;
     max-width: 600px;
-    box-sizing: border-box; /* Щоб не вилазило за екран */
+    box-sizing: border-box;
 }
 
 /* --- Хедер та Лого --- */
@@ -54,35 +55,56 @@ body {
     justify-content: center;
     align-items: center;
     width: 100%;
+    z-index: 2;
 }
 
-/* Фейкове світіння, яке потрапить на скріншот */
 .logo-glow {
     position: absolute;
-    width: 60%;
-    height: 30px;
-    background: #8a2be2;
-    box-shadow: 0 0 60px 40px #8a2be2;
+    width: 70%;
+    height: 40px;
+    background: rgba(138, 43, 226, 0.3);
+    filter: blur(30px);
     border-radius: 50%;
     z-index: 0;
-    opacity: 0.9;
 }
 
 .neon-logo {
-    max-width: 250px;
-    width: 80%; /* Адаптація для маленьких екранів */
+    max-width: 260px;
+    width: 85%;
     height: auto;
     position: relative;
     z-index: 1;
-    animation: pulseLogo 3s infinite alternate;
+    filter: drop-shadow(0 0 10px #8a2be2);
 }
 
-@keyframes pulseLogo {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.03); }
+/* --- Текст для скріншоту (прихований) --- */
+.hidden-text {
+    display: none; /* Сховано за замовчуванням */
+    color: #00ffff;
+    margin: 10px 0 20px 0;
+    text-shadow: 0 0 10px #8a2be2;
 }
 
-/* --- Куля --- */
+.hidden-text p {
+    margin: 5px 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.hidden-text h3 {
+    margin: 10px 0;
+    font-size: 24px;
+    color: #fff;
+    text-shadow: 0 0 15px #00ffff, 0 0 30px #8a2be2;
+    text-transform: uppercase;
+}
+
+/* Клас, який робить текст видимим під час скріншоту */
+.show-on-screenshot {
+    display: block !important;
+}
+
+/* --- Куля (МАГІЧНИЙ АПГРЕЙД) --- */
 .main-content-wrapper {
     display: flex;
     flex-direction: column;
@@ -95,167 +117,190 @@ body {
     position: relative;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
-.magic-particles {
+/* Ефект блискавок навколо кулі */
+.lightning-layer {
     position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 320px; height: 320px;
+    width: 340px; height: 340px;
     border-radius: 50%;
-    box-shadow: 0 0 50px #8a2be2, inset 0 0 50px #00ffff;
-    opacity: 0.3;
-    animation: spinMagic 10s linear infinite;
+    background: repeating-conic-gradient(
+        from 0deg,
+        rgba(0,0,0,0) 0deg,
+        rgba(0,0,0,0) 15deg,
+        rgba(138, 43, 226, 0.1) 18deg,
+        rgba(0, 255, 255, 0.15) 20deg,
+        rgba(0,0,0,0) 25deg
+    );
+    animation: rotateLightning 12s infinite linear;
     z-index: 0;
+    pointer-events: none;
 }
 
-@keyframes spinMagic {
-    0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
-    50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.05); }
-    100% { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+.lightning-layer.reverse {
+    width: 360px; height: 360px;
+    background: repeating-conic-gradient(
+        from 90deg,
+        rgba(0,0,0,0) 0deg,
+        rgba(0,0,0,0) 10deg,
+        rgba(0, 255, 255, 0.08) 15deg,
+        rgba(138, 43, 226, 0.1) 22deg,
+        rgba(0,0,0,0) 30deg
+    );
+    animation: rotateLightning 8s infinite linear reverse;
+    opacity: 0.7;
+}
+
+@keyframes rotateLightning {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 .magic-ball-outer {
-    width: 280px; /* Трохи зменшив для ідеального відображення на телефонах */
-    height: 280px;
+    width: 290px;
+    height: 290px;
     border-radius: 50%;
-    padding: 8px;
+    padding: 6px;
+    /* Складне неонове світіння */
     box-shadow: 
-        0 0 40px rgba(0, 255, 255, 0.4), 
-        0 0 80px rgba(138, 43, 226, 0.4),
-        inset 0 0 60px rgba(0, 255, 255, 0.3);
-    background: linear-gradient(145deg, #2b0054, #000000);
+        0 0 40px rgba(0, 255, 255, 0.3), 
+        0 0 80px rgba(138, 43, 226, 0.3),
+        inset 0 0 80px rgba(0, 0, 0, 0.8);
+    background: linear-gradient(145deg, #1a0033, #09001d);
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     z-index: 1;
-    animation: breathe 4s infinite alternate ease-in-out;
-}
-
-@keyframes breathe {
-    0% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.4), 0 0 80px rgba(138, 43, 226, 0.4); }
-    100% { box-shadow: 0 0 60px rgba(0, 255, 255, 0.6), 0 0 100px rgba(138, 43, 226, 0.6); }
+    overflow: hidden; /* Щоб блискавки не вилазили */
 }
 
 .magic-ball {
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at 35% 25%, #4a4a4a, #000 65%);
+    /* Глибокий чорний з фіолетовим відливом */
+    background: radial-gradient(circle at 40% 30%, #333, #000 70%);
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: inset -25px -25px 60px rgba(0,0,0,0.9), inset 10px 10px 30px rgba(255,255,255,0.1);
+    box-shadow: inset -10px -10px 40px rgba(0,0,0,1), inset 5px 5px 20px rgba(255,255,255,0.1);
     cursor: pointer;
     position: relative;
     overflow: hidden;
-}
-
-/* Світіння для маленького лого на скріншоті */
-.ball-logo-wrapper {
-    position: absolute;
-    bottom: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     z-index: 2;
 }
 
-.ball-logo-glow {
+/* ВИПРАВЛЕННЯ ТОЧКИ: М'яке світіння для маленького лого */
+.ball-logo-wrapper {
     position: absolute;
-    width: 40px;
-    height: 15px;
-    background: #00ffff;
-    box-shadow: 0 0 25px 15px #00ffff;
+    bottom: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 3;
+}
+
+.ball-logo-glow-soft {
+    position: absolute;
+    width: 80px; /* Ширше */
+    height: 20px;
+    background: transparent; /* Прозорий фон */
+    /* М'яка розмита тінь замість жорсткої точки */
+    box-shadow: 0 5px 20px 5px rgba(0, 255, 255, 0.5); 
     border-radius: 50%;
     z-index: 0;
-    opacity: 0.8;
 }
 
 .ball-logo {
     position: relative;
-    width: 60px;
+    width: 65px;
     z-index: 1;
+    filter: drop-shadow(0 2px 5px rgba(0,255,255,0.3));
 }
 
+/* Вікно відповіді */
 .window-bezel {
-    width: 150px;
-    height: 150px;
+    width: 155px;
+    height: 155px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #111, #333);
+    background: linear-gradient(135deg, #050505, #222);
     display: flex;
     justify-content: center;
     align-items: center;
+    /* Яскраве неонове кільце */
     box-shadow: 
-        0 0 20px #00ffff,
-        inset 0 0 20px #8a2be2;
-    border: 3px solid #00ffff;
+        0 0 25px #00ffff,
+        inset 0 0 15px #8a2be2;
+    border: 2px solid #00ffff;
 }
 
 .window {
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle at center, #1a0033, #000 85%);
+    width: 125px;
+    height: 125px;
+    background: radial-gradient(circle at center, #1a0033 10%, #000 90%);
     border-radius: 50%;
-    border: 3px solid #050505;
+    border: 3px solid #000;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     overflow: hidden;
-    box-shadow: inset 0 0 30px #000;
+    box-shadow: inset 0 0 40px #000;
 }
 
 .eight {
-    font-size: 75px;
-    color: rgba(255,255,255,0.9);
-    text-shadow: 0 0 15px #00ffff, 0 0 30px #8a2be2;
+    font-size: 80px;
+    color: rgba(255,255,255,0.8);
+    text-shadow: 0 0 20px #00ffff;
 }
 
 .triangle {
     width: 0;
     height: 0;
-    border-left: 55px solid transparent;
-    border-right: 55px solid transparent;
-    border-top: 90px solid #3d007a; 
+    border-left: 58px solid transparent;
+    border-right: 58px solid transparent;
+    border-top: 95px solid #3d007a; 
     position: relative;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    filter: drop-shadow(0 0 20px #8a2be2);
+    filter: drop-shadow(0 0 25px #8a2be2);
     animation: float 3s ease-in-out infinite;
 }
 
 @keyframes float {
     0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-4px); }
+    50% { transform: translateY(-5px); }
 }
 
 .answer-text {
     position: absolute;
-    top: -85px;
+    top: -90px;
     color: #00ffff; 
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.2;
     text-transform: uppercase;
     text-align: center;
-    width: 80px;
-    text-shadow: 0 0 6px #00ffff, 0 0 12px #00ffff;
+    width: 85px;
+    text-shadow: 0 0 8px #00ffff, 0 0 15px #00ffff;
     font-weight: bold;
     letter-spacing: 1px;
 }
 
+/* Інтерфейс */
 .neon-box {
-    border: 2px solid #8a2be2;
-    box-shadow: 0 0 20px rgba(138, 43, 226, 0.4), inset 0 0 15px rgba(138, 43, 226, 0.2);
-    padding: 15px 25px;
-    border-radius: 12px;
-    background: rgba(5, 0, 15, 0.7);
+    border: 1px solid #8a2be2;
+    box-shadow: 0 0 20px rgba(138, 43, 226, 0.3), inset 0 0 20px rgba(138, 43, 226, 0.1);
+    padding: 20px 25px;
+    border-radius: 15px;
+    background: rgba(5, 0, 20, 0.8);
     text-align: left;
     width: 90%;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
     box-sizing: border-box;
+    margin-top: 10px;
 }
 
 .neon-box h2 {
@@ -263,42 +308,45 @@ body {
     text-align: center;
     font-size: 16px;
     color: #00ffff;
-    text-shadow: 0 0 8px #00ffff;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px #00ffff;
 }
 
 .neon-box ol {
     padding-left: 20px;
     margin-bottom: 0;
+    color: #dcdcdc;
 }
 .neon-box li {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     font-size: 14px;
-    text-shadow: 0 0 2px #fff;
 }
 
 .neon-button {
-    background: linear-gradient(45deg, #4b0082, #8a2be2);
+    background: linear-gradient(90deg, #4b0082, #8a2be2);
     color: #00ffff;
     border: 2px solid #00ffff;
-    padding: 15px 40px;
+    padding: 18px 30px;
     font-size: 16px;
     font-family: 'Cinzel', serif;
-    border-radius: 35px;
+    border-radius: 50px;
     cursor: pointer;
-    box-shadow: 0 0 20px #8a2be2, 0 0 10px #00ffff;
+    box-shadow: 0 0 25px rgba(138, 43, 226, 0.6), 0 0 10px #00ffff;
     transition: 0.3s;
     text-transform: uppercase;
     font-weight: bold;
-    letter-spacing: 1.5px;
-    margin-top: 10px;
-    margin-bottom: 30px; /* Відступ знизу на телефоні */
+    letter-spacing: 1px;
+    margin-top: 15px;
+    margin-bottom: 40px;
+    width: 80%;
+    max-width: 300px;
 }
 
 .neon-button:hover {
-    background: linear-gradient(45deg, #8a2be2, #00ffff);
+    background: linear-gradient(90deg, #8a2be2, #00ffff);
     color: #050011;
-    box-shadow: 0 0 30px #00ffff, 0 0 20px #8a2be2;
-    transform: scale(1.05);
+    box-shadow: 0 0 40px #00ffff, 0 0 25px #8a2be2;
+    transform: scale(1.02);
 }
 
 .hidden { display: none !important; }
