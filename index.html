@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MagicBlock | Куля Долі</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div id="stars"></div>
+    
+    <div class="container">
+        <div class="instructions neon-border">
+            <h2>Як це працює:</h2>
+            <ol>
+                <li>Звільни розум та чітко сформулюй своє запитання.</li>
+                <li>Куля відповідає лише на питання "Так" або "Ні".</li>
+                <li>Доторкнись до кулі, щоб дізнатися правду.</li>
+            </ol>
+        </div>
+
+        <div class="ball-wrapper" id="capture-area">
+            <div class="magic-ball" id="magic-ball">
+                <div class="window">
+                    <div class="eight" id="eight">8</div>
+                    <div class="triangle hidden" id="triangle">
+                        <span class="answer-text" id="answer"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button id="download-btn" class="hidden">Зберегти пророцтво</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
