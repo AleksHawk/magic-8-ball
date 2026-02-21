@@ -12,58 +12,52 @@
     <audio id="sound-shake" src="https://assets.mixkit.co/sfx/preview/mixkit-magic-sweep-game-trophy-257.mp3" crossorigin="anonymous" playsinline></audio>
     <audio id="sound-reveal" src="https://assets.mixkit.co/sfx/preview/mixkit-fairy-arcade-sparkle-866.mp3" crossorigin="anonymous" playsinline></audio>
 
-    <div id="stars"></div>
-    
-    <div class="container" id="capture-area">
+    <div id="capture-area" class="poster-frame">
+        <div class="stars-bg"></div>
+        
         <header class="main-header">
-            <div class="logo-glow"></div>
             <img src="logo-main.png" alt="MagicBlock Logo" class="neon-logo">
         </header>
 
-        <div id="screenshot-text-block" class="hidden-text">
-            <p>Магічна куля MagicBlock щойно мені сказала:</p>
-            <h3 id="screenshot-answer-result"></h3>
-            <p>Перевір свою долю!</p>
+        <div id="poster-text" class="poster-text hidden">
+            <p>THE MAGICBLOCK ORACLE HAS SPOKEN:</p>
+            <h3 id="poster-answer-result"></h3>
+            <p>SEEK YOUR OWN DESTINY!</p>
         </div>
 
-        <div class="main-content-wrapper">
-            <div class="ball-wrapper">
-                <div class="lightning-layer reverse"></div>
-                <div class="lightning-layer"></div>
-                <div class="magic-particles"></div>
-                
-                <div class="magic-ball-outer">
-                    <div class="magic-ball" id="magic-ball">
-                        
-                        <div class="ball-logo-wrapper">
-                            <div class="ball-logo-glow-soft"></div>
-                            <img src="MagicBlock-Logomark-White.png" alt="MB" class="ball-logo">
-                        </div>
-                        
-                        <div class="window-bezel">
-                            <div class="window">
-                                <div class="eight" id="eight">8</div>
-                                <div class="triangle hidden" id="triangle">
-                                    <span class="answer-text" id="answer"></span>
-                                </div>
+        <div class="ball-wrapper">
+            <div class="magic-aura"></div>
+            
+            <div class="magic-ball-outer">
+                <div class="magic-ball" id="magic-ball">
+                    
+                    <img src="logo-ball.png" alt="MB" class="ball-logo">
+                    
+                    <div class="window-bezel">
+                        <div class="window">
+                            <div class="eight" id="eight">8</div>
+                            <div class="triangle hidden" id="triangle">
+                                <span class="answer-text" id="answer"></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="instructions neon-box" id="instructions-box">
-                <h2>HOW IT WORKS:</h2>
-                <ol>
-                    <li>Clear your mind and ask a 'Yes/No' question.</li>
-                    <li>Tap the ball to awaken the magic.</li>
-                    <li>Save your prophecy!</li>
-                </ol>
-            </div>
         </div>
     </div>
     
-    <button id="download-btn" class="neon-button hidden">SAVE PROPHECY (POSTER)</button>
+    <div class="ui-container">
+        <div class="instructions neon-box" id="instructions-box">
+            <h2>HOW IT WORKS:</h2>
+            <ol>
+                <li>Clear your mind and ask a 'Yes/No' question.</li>
+                <li>Tap the ball to awaken the magic.</li>
+                <li>Save your prophecy!</li>
+            </ol>
+        </div>
+        
+        <button id="download-btn" class="neon-button hidden">SAVE POSTER</button>
+    </div>
 
     <script src="script.js"></script>
 </body>
