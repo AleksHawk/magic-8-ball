@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MagicBlock | Mystic 8 Ball</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
-    <audio id="sound-shake" src="https://assets.mixkit.co/sfx/preview/mixkit-magic-sweep-game-trophy-257.mp3" crossorigin="anonymous"></audio>
-    <audio id="sound-reveal" src="https://assets.mixkit.co/sfx/preview/mixkit-fairy-arcade-sparkle-866.mp3" crossorigin="anonymous"></audio>
+    <audio id="sound-shake" src="https://assets.mixkit.co/sfx/preview/mixkit-magic-sweep-game-trophy-257.mp3" crossorigin="anonymous" playsinline></audio>
+    <audio id="sound-reveal" src="https://assets.mixkit.co/sfx/preview/mixkit-fairy-arcade-sparkle-866.mp3" crossorigin="anonymous" playsinline></audio>
 
     <div id="stars"></div>
     
@@ -20,15 +20,24 @@
             <img src="logo-main.png" alt="MagicBlock Logo" class="neon-logo">
         </header>
 
+        <div id="screenshot-text-block" class="hidden-text">
+            <p>Магічна куля MagicBlock щойно мені сказала:</p>
+            <h3 id="screenshot-answer-result"></h3>
+            <p>Перевір свою долю!</p>
+        </div>
+
         <div class="main-content-wrapper">
             <div class="ball-wrapper">
+                <div class="lightning-layer reverse"></div>
+                <div class="lightning-layer"></div>
                 <div class="magic-particles"></div>
+                
                 <div class="magic-ball-outer">
                     <div class="magic-ball" id="magic-ball">
                         
                         <div class="ball-logo-wrapper">
-                            <div class="ball-logo-glow"></div>
-                            <img src="logo-ball.png" alt="MB" class="ball-logo">
+                            <div class="ball-logo-glow-soft"></div>
+                            <img src="MagicBlock-Logomark-White.png" alt="MB" class="ball-logo">
                         </div>
                         
                         <div class="window-bezel">
@@ -54,7 +63,7 @@
         </div>
     </div>
     
-    <button id="download-btn" class="neon-button hidden">SAVE PROPHECY</button>
+    <button id="download-btn" class="neon-button hidden">SAVE PROPHECY (POSTER)</button>
 
     <script src="script.js"></script>
 </body>
