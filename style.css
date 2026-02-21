@@ -1,0 +1,173 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #050011;
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    cursor: crosshair;
+}
+
+/* Анімований зоряний фон */
+#stars {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, #eee, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 50px 160px, #ddd, rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    z-index: -1;
+    animation: twinkle 5s infinite linear;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.8; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0.8; }
+}
+
+.container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 20px;
+}
+
+.neon-border {
+    border: 2px solid #8a2be2;
+    box-shadow: 0 0 15px #8a2be2, inset 0 0 10px #8a2be2;
+    padding: 20px 30px;
+    border-radius: 15px;
+    background: rgba(10, 0, 20, 0.7);
+    max-width: 400px;
+    text-align: left;
+}
+
+.neon-border h2 {
+    margin-top: 0;
+    text-align: center;
+    text-shadow: 0 0 5px #8a2be2;
+}
+
+.magic-ball {
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle at 80px 80px, #444, #000 80%);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.4), inset -20px -20px 40px rgba(0,0,0,0.5);
+    cursor: pointer;
+    transition: transform 0.2s;
+    margin: 0 auto;
+}
+
+.window {
+    width: 130px;
+    height: 130px;
+    background: radial-gradient(circle at center, #111, #000);
+    border-radius: 50%;
+    border: 5px solid #222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.eight {
+    font-size: 70px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.triangle {
+    width: 0;
+    height: 0;
+    border-left: 45px solid transparent;
+    border-right: 45px solid transparent;
+    border-top: 78px solid #1a0033;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    filter: drop-shadow(0 0 10px #8a2be2);
+}
+
+.answer-text {
+    position: absolute;
+    top: -65px;
+    color: #00ffff;
+    font-size: 12px;
+    text-transform: uppercase;
+    text-align: center;
+    width: 70px;
+    text-shadow: 0 0 5px #00ffff;
+    font-weight: bold;
+}
+
+.hidden { display: none !important; }
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+button {
+    background-color: #8a2be2;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #8a2be2;
+    transition: 0.3s;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #9b4dca;
+    box-shadow: 0 0 25px #9b4dca;
+    transform: scale(1.05);
+}
+
+/* Магічний слід від курсора */
+.sparkle {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #fff;
+    border-radius: 50%;
+    pointer-events: none;
+    box-shadow: 0 0 10px #fff, 0 0 20px #00ffff;
+    animation: fadeOut 0.8s forwards;
+    z-index: 9999;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0); }
+}
