@@ -5,86 +5,103 @@ const answers = [
 ];
 
 const ball = document.getElementById('magic-ball');
-const eight = document.getElementById('eight');
+const eightLogo = document.getElementById('eight'); // Змінили змінну, бо там тепер лого
 const triangle = document.getElementById('triangle');
 const answerText = document.getElementById('answer');
 const downloadBtn = document.getElementById('download-btn');
+const instructionsBox = document.getElementById('instructions-box');
 const captureArea = document.getElementById('capture-area');
-const posterText = document.getElementById('poster-text');
-const posterAnswerResult = document.getElementById('poster-answer-result');
 
+// Звукові ефекти
 const soundShake = document.getElementById('sound-shake');
 const soundReveal = document.getElementById('sound-reveal');
-
-function playSound(sound) {
-    try {
-        sound.currentTime = 0;
-        sound.play().catch(() => {});
-    } catch(e) {}
-}
+soundShake.volume = 0.5;
+soundReveal.volume = 0.6;
 
 ball.addEventListener('click', () => {
-    playSound(soundShake);
+    // Граємо звук трясіння
+    soundShake.currentTime = 0;
+    soundShake.play().catch(e => console.log("Audio play failed:", e)); // Ловимо помилки автозапуску
 
     triangle.classList.add('hidden');
-    eight.classList.remove('hidden');
+    eightLogo.classList.remove('hidden');
     downloadBtn.classList.add('hidden');
     
+    if (instructionsBox) instructionsBox.classList.add('hidden');
+
     ball.classList.add('shake');
 
     setTimeout(() => {
         ball.classList.remove('shake');
         
         const randomIndex = Math.floor(Math.random() * answers.length);
-        const finalAnswer = answers[randomIndex];
-        
-        answerText.innerText = finalAnswer;
-        posterAnswerResult.innerText = finalAnswer;
+        answerText.innerText = answers[randomIndex];
 
-        playSound(soundReveal);
+        // Граємо звук появи
+        soundReveal.currentTime = 0;
+        soundReveal.play().catch(e => console.log("Audio play failed:", e));
 
-        eight.classList.add('hidden');
+        eightLogo.classList.add('hidden');
         triangle.classList.remove('hidden');
         
         downloadBtn.classList.remove('hidden');
-    }, 500);
+    }, 600);
 });
 
-downloadBtn.addEventListener('click', async () => {
+// Функція скріншоту
+downloadBtn.addEventListener('click', () => {
     const originalText = downloadBtn.innerText;
-    downloadBtn.innerText = "PREPARING..."; 
-    downloadBtn.style.opacity = '0.5';
-
-    // 1. Готуємо контейнер до зйомки (показуємо текст, робимо відступи)
-    posterText.classList.remove('hidden');
-    captureArea.classList.add('capture-mode');
-
-    // Даємо браузеру 200 мілісекунд, щоб він застосував стилі перед скріншотом
-    await new Promise(resolve => setTimeout(resolve, 200));
-
-    // 2. Робимо скріншот. Scale: 2 (краще для пам'яті телефону, ніж 3)
+    downloadBtn.innerText = "DIVINING..."; 
+    
     html2canvas(captureArea, {
-        backgroundColor: "#050011", 
-        scale: 2, 
-        useCORS: true,
-        logging: false
+        backgroundColor: "#09001d", 
+        scale: 3, 
+        useCORS: true, 
+        logging: false,
+        x: window.scrollX,
+        y: window.scrollY,
+        width: captureArea.offsetWidth,
+        height: captureArea.offsetHeight
     }).then(canvas => {
-        // 3. Завантажуємо
         const link = document.createElement('a');
-        link.download = 'MagicBlock-Oracle.png';
+        link.download = 'MagicBlock-Prophecy.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
         
-        // 4. Повертаємо сайт у початковий вигляд
-        posterText.classList.add('hidden');
-        captureArea.classList.remove('capture-mode');
         downloadBtn.innerText = originalText;
-        downloadBtn.style.opacity = '1';
-    }).catch(err => {
-        console.error("Screenshot failed:", err);
-        posterText.classList.add('hidden');
-        captureArea.classList.remove('capture-mode');
-        downloadBtn.innerText = "ERROR. TRY AGAIN";
-        downloadBtn.style.opacity = '1';
     });
 });
+
+// --- Магічний слід від курсора (Sparkle Trail) ---
+let throttleTimer;
+document.addEventListener('mousemove', (e) => {
+    // Обмежуємо кількість іскор, щоб не перевантажувати браузер
+    if (throttleTimer) return;
+    throttleTimer = setTimeout(() => throttleTimer = null, 40);
+
+    createSparkle(e.pageX, e.pageY);
+});
+
+function createSparkle(x, y) {
+    const sparkle = document.createElement('div');
+    sparkle.classList.add('sparkle');
+    
+    // Додаємо трохи випадковості в позицію
+    const offsetX = (Math.random() - 0.5) * 10;
+    const offsetY = (Math.random() - 0.5) * 10;
+
+    sparkle.style.left = `${x + offsetX}px`;
+    sparkle.style.top = `${y + offsetY}px`;
+    
+    // Випадковий розмір
+    const size = Math.random() * 5 + 3;
+    sparkle.style.width = `${size}px`;
+    sparkle.style.height = `${size}px`;
+
+    document.body.appendChild(sparkle);
+
+    // Видаляємо елемент після завершення анімації
+    setTimeout(() => {
+        sparkle.remove();
+    }, 800);
+}
